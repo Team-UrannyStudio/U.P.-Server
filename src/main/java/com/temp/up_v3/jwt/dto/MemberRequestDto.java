@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
 @AllArgsConstructor
@@ -16,8 +17,9 @@ public class MemberRequestDto {
     private String password;
     private String address;
     private String phone;
+    private String email;
 
-    public Member toMember(org.springframework.security.crypto.password.PasswordEncoder passwordEncoder) {
+    public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .uid(uid)
                 .name(name)
@@ -25,6 +27,7 @@ public class MemberRequestDto {
                 .authority(Authority.ROLE_USER)
                 .address(address)
                 .phone(phone)
+                .email(email)
                 .build();
     }
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.hibernate.type.descriptor.java.CoercionHelper.toLong;
 
@@ -23,7 +24,7 @@ public class Contest{
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String category;
 
     @Column(nullable = false)
@@ -56,11 +57,14 @@ public class Contest{
     @Column(nullable = false)
     private String applyLink;
 
-    @Column(nullable = false)
+    @Column
     private String contact;
 
     @Column
     private String etc;
+
+    @Column
+    private List<Member>;
 
     @Column
     private Long like_num;
@@ -68,7 +72,7 @@ public class Contest{
     @Column
     private LocalDateTime created_at;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
