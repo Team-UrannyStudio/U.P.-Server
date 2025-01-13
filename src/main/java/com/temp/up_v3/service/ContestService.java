@@ -7,20 +7,18 @@ import com.temp.up_v3.dto.contest.ContestRequestDto;
 import com.temp.up_v3.dto.contest.ContestResponseDto;
 import com.temp.up_v3.repository.ContestRepository;
 import com.temp.up_v3.repository.MemberRepository;
-import com.temp.up_v3.util.SecurityUtil;
-import jakarta.persistence.EntityManager;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
+import static org.hibernate.type.descriptor.java.CoercionHelper.toLong;
 
 @Service
 @AllArgsConstructor
@@ -28,13 +26,18 @@ public class ContestService {
 
     private final ContestRepository contestRepository;
     private final MemberRepository memberRepository;
+    private final ImageService imageService;
 
-    public ContestResponseDto createContest(ContestRequestDto requestDto) {
-
+    public Contest createContest(ContestRequestDto requestDto, MultipartFile image) {
         Contest contest = new Contest(requestDto);
+        if (contest.getContact() == null) {
+            contest.setContact(memberRepository.findByUid(SecurityContextHolder.getContext().getAuthentication().getName()).get().getEmail());
+        }
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         contest.setMember(memberRepository.findMemberByUid(SecurityContextHolder.getContext().getAuthentication().getName()));
+        imageService.uploadImage(contest, image);
         contestRepository.save(contest);
-        return new ContestResponseDto(contest);
+        return contest;
     }
 
     public List<ContestListResponseDto> findAllContests() {

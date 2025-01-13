@@ -18,13 +18,16 @@ public class Member {
     private String uid;
 
     @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
     @Size(min = 2, max = 13)
     private String name;
 
     @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private String phone;
 
     @Enumerated(EnumType.STRING)
@@ -35,12 +38,13 @@ public class Member {
     private String address;
 
     @Builder
-    public Member(String uid, String password, Authority authority, String phone, String address, String name) {
+    public Member(String uid, String password, Authority authority, String phone, String address, String name, String email) {
         this.uid = uid;
         this.password = password;
         this.authority = authority;
         this.phone = phone;
         this.address = address;
         this.name = name;
+        this.email = email;
     }
 }
