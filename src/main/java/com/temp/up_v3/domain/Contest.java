@@ -64,9 +64,6 @@ public class Contest{
     private String etc;
 
     @Column
-    private List<Member>;
-
-    @Column
     private Long like_num;
 
     @Column
