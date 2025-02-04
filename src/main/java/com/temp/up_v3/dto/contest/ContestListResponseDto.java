@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class ContestListResponseDto {
+    private Long id;
     private String title;
     private String category;
     private String host;
@@ -23,8 +24,10 @@ public class ContestListResponseDto {
     private String etc;
     private Long like_num;
     private LocalDateTime created_at;
+    private String imagePath;
 
     public ContestListResponseDto(Contest contest) {
+        this.id = contest.getId();
         this.title = contest.getTitle();
         this.category = contest.getCategory();
         this.host = contest.getHost();

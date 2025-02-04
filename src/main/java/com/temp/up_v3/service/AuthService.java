@@ -27,7 +27,6 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Transactional
     public MemberResponseDto signup(MemberRequestDto memberRequestDto) {
         if (memberRepository.existsByUid(memberRequestDto.getUid())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다");
@@ -37,7 +36,6 @@ public class AuthService {
         return MemberResponseDto.of(memberRepository.save(member));
     }
 
-    @Transactional
     public TokenDto login(MemberRequestDto memberRequestDto) {
         // 1. email과 password 즉, memberRequestDto를 사용하여 authenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = memberRequestDto.toAuthentication();
@@ -61,7 +59,6 @@ public class AuthService {
         return tokenDto;
     }
 
-    @Transactional
     public TokenDto reissue(TokenRequestDto tokenRequestDto) {
         // 1. Refresh Token 검증
         if (!tokenProvider.validateToken(tokenRequestDto.getRefreshToken())) {
@@ -70,9 +67,6 @@ public class AuthService {
 
         // 2. Access Token 에서 Member ID 가져오기
         Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
-
-        System.out.println(authentication);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
 
         // 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
         RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())

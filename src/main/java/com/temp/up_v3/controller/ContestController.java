@@ -1,23 +1,17 @@
 package com.temp.up_v3.controller;
 
 import com.temp.up_v3.domain.Contest;
-import com.temp.up_v3.domain.Member;
+import com.temp.up_v3.dto.contest.ContestIdDto;
 import com.temp.up_v3.dto.contest.ContestListResponseDto;
 import com.temp.up_v3.dto.contest.ContestRequestDto;
 import com.temp.up_v3.dto.contest.ContestResponseDto;
 import com.temp.up_v3.service.ContestService;
 import com.temp.up_v3.service.ImageService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -42,23 +36,35 @@ public class ContestController {
         return contestService.findAllContests();
     }
 
-    // 글 하나 조회
-    @GetMapping("/findOne")
+    // 글 수정 시 특정 글 정보 반환
+    @GetMapping("/update")
     public ContestResponseDto getOneContest(@RequestBody Long id) {
         return contestService.findOneContest(id);
     }
 
     // 글 수정
     @PutMapping("/update")
-    public ResponseEntity<String> updateContest(@RequestBody Long id, @RequestBody ContestRequestDto requestDto) {
-        contestService.updateContest(id,requestDto);
+    public ResponseEntity<String> updateContest(@RequestPart ContestIdDto idDto, @RequestPart ContestRequestDto requestDto, @RequestParam MultipartFile image) {
+        contestService.updateContest(idDto.getContestId(), requestDto, image);
         return ResponseEntity.ok("success");
     }
 
     // 글 삭제
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteContest(@RequestBody Long id) {
-        contestService.deleteContest(id);
+    public ResponseEntity<String> deleteContest(@RequestBody ContestIdDto idDto) {
+        contestService.deleteContest(idDto.getContestId());
+        return ResponseEntity.ok("success");
+    }
+
+    @PutMapping("/bookmarked")
+    public ResponseEntity<String> bookmarkedContest(@RequestBody ContestIdDto contestIdDto) {
+        contestService.bookmarkContest(contestIdDto.getContestId());
+        return ResponseEntity.ok("success");
+    }
+
+    @PutMapping("/liked")
+    public ResponseEntity<String> likedContest(@RequestBody ContestIdDto contestIdDto) {
+        contestService.likeContest(contestIdDto.getContestId());
         return ResponseEntity.ok("success");
     }
 }

@@ -12,27 +12,29 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Table(name = "image_details")
-public class ContestImageDetails {
+public class ImageDetails {
 
     @Id
-    @Column(name = "contest_id", nullable = false)
-    private Long contestId;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @MapsId
-    @JoinColumn(name = "contest_id", nullable = false)
-    private Contest contest;
+    @Column(nullable = false)
+    private String contentId;
 
     @Column(nullable = false)
     private String imagePath;
 
+    @Column(nullable = false)
+    private String imageName;
+
     @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
-    public ContestImageDetails(Contest contest, String imagePath) {
-        this.contest = contest;
+    public ImageDetails(String imagePath, String imageName) {
         this.imagePath = imagePath;
+        this.imageName = imageName;
         this.createdAt = LocalDateTime.now();
+    }
 
+    public void update(String imagePath, String imageName) {
+        this.imagePath = imagePath;
+        this.imageName = imageName;
     }
 }

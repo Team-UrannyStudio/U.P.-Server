@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hibernate.type.descriptor.java.CoercionHelper.toLong;
@@ -69,9 +70,12 @@ public class Contest{
     @Column
     private LocalDateTime created_at;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> liked;
 
     public Contest(ContestRequestDto requestDto) {
         this.title = requestDto.getTitle();

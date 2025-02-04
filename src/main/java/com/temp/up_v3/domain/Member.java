@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -37,6 +40,12 @@ public class Member {
     @Pattern(regexp = "^(http|https)://.*$", message = "주소는 유효한 URL 형식이어야 합니다.")
     private String address;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> bookmarked;
+
+    @Column
+    private String profilePicture;
+
     @Builder
     public Member(String uid, String password, Authority authority, String phone, String address, String name, String email) {
         this.uid = uid;
@@ -46,5 +55,6 @@ public class Member {
         this.address = address;
         this.name = name;
         this.email = email;
+        this.bookmarked = new ArrayList<>();
     }
 }
