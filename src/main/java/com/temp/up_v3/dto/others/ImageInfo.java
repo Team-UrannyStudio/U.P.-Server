@@ -1,4 +1,4 @@
-package com.temp.up_v3.dto.image;
+package com.temp.up_v3.dto.others;
 
 import lombok.Data;
 

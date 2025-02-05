@@ -6,14 +6,12 @@ import com.temp.up_v3.domain.Member;
 import com.temp.up_v3.dto.contest.ContestListResponseDto;
 import com.temp.up_v3.dto.contest.ContestRequestDto;
 import com.temp.up_v3.dto.contest.ContestResponseDto;
-import com.temp.up_v3.dto.image.ImageInfo;
+import com.temp.up_v3.dto.others.ImageInfo;
 import com.temp.up_v3.repository.ContestRepository;
 import com.temp.up_v3.repository.ImageRepository;
 import com.temp.up_v3.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.hibernate.Hibernate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static java.nio.file.Files.size;
 import static org.hibernate.type.descriptor.java.CoercionHelper.toLong;
 
 @Service
@@ -125,34 +122,27 @@ public class ContestService {
         imageRepository.delete(imageRepository.findByContentId("contest_" + id));
     }
 
-    //북마크
     @Transactional
-    public void bookmarkContest(Long contestId) {
+    public void likeContest(Long contestId) {
 
         String memberId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Member member = memberRepository.findByUid(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다."));
 
-        if (member.getBookmarked().contains(contestId)) {
-            member.getBookmarked().remove(contestId);
-        } else {
-            member.getBookmarked().add(contestId);
-        }
-    }
-
-    @Transactional
-    public void likeContest(Long contestId) {
-
-        String memberId = SecurityContextHolder.getContext().getAuthentication().getName();
-
         Contest contest = contestRepository.findById(contestId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 대회가 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 콘테스트가 존재하지 않습니다."));
 
-        if (contest.getLiked().contains(memberId)) {
-            contest.getLiked().remove(memberId);
+        if (member.getLiked().contains("contest_" + contestId)) {
+
+            member.getLiked().remove("contest_" + contestId);
+            contest.setLike_num(contest.getLike_num() - 1);
+
         } else {
-            contest.getLiked().add(memberId);
+
+            member.getLiked().add("contest_" + contestId);
+            contest.setLike_num(contest.getLike_num() + 1);
+
         }
     }
 }

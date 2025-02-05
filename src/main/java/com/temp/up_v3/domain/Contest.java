@@ -74,9 +74,6 @@ public class Contest{
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> liked;
-
     public Contest(ContestRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.host = requestDto.getHost();

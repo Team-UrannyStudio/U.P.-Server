@@ -24,6 +24,7 @@ public class ContestResponseDto {
     private String etc;
     private LocalDateTime created_at;
     private String imagePath;
+
     public ContestResponseDto(Contest contest) {
         this.title = contest.getTitle();
         this.category = contest.getCategory();

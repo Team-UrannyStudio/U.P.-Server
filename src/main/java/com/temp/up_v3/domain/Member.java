@@ -40,11 +40,11 @@ public class Member {
     @Pattern(regexp = "^(http|https)://.*$", message = "주소는 유효한 URL 형식이어야 합니다.")
     private String address;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Long> bookmarked;
-
     @Column
     private String profilePicture;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> liked;
 
     @Builder
     public Member(String uid, String password, Authority authority, String phone, String address, String name, String email) {
@@ -55,6 +55,6 @@ public class Member {
         this.address = address;
         this.name = name;
         this.email = email;
-        this.bookmarked = new ArrayList<>();
+        this.liked = new ArrayList<>();
     }
 }

@@ -2,7 +2,7 @@ package com.temp.up_v3.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.temp.up_v3.dto.image.ImageInfo;
+import com.temp.up_v3.dto.others.ImageInfo;
 import com.temp.up_v3.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

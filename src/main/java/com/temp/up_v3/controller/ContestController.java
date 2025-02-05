@@ -1,7 +1,7 @@
 package com.temp.up_v3.controller;
 
 import com.temp.up_v3.domain.Contest;
-import com.temp.up_v3.dto.contest.ContestIdDto;
+import com.temp.up_v3.dto.others.IdDto;
 import com.temp.up_v3.dto.contest.ContestListResponseDto;
 import com.temp.up_v3.dto.contest.ContestRequestDto;
 import com.temp.up_v3.dto.contest.ContestResponseDto;
@@ -44,27 +44,21 @@ public class ContestController {
 
     // 글 수정
     @PutMapping("/update")
-    public ResponseEntity<String> updateContest(@RequestPart ContestIdDto idDto, @RequestPart ContestRequestDto requestDto, @RequestParam MultipartFile image) {
-        contestService.updateContest(idDto.getContestId(), requestDto, image);
+    public ResponseEntity<String> updateContest(@RequestPart IdDto idDto, @RequestPart ContestRequestDto requestDto, @RequestParam MultipartFile image) {
+        contestService.updateContest(idDto.getId(), requestDto, image);
         return ResponseEntity.ok("success");
     }
 
     // 글 삭제
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteContest(@RequestBody ContestIdDto idDto) {
-        contestService.deleteContest(idDto.getContestId());
-        return ResponseEntity.ok("success");
-    }
-
-    @PutMapping("/bookmarked")
-    public ResponseEntity<String> bookmarkedContest(@RequestBody ContestIdDto contestIdDto) {
-        contestService.bookmarkContest(contestIdDto.getContestId());
+    public ResponseEntity<String> deleteContest(@RequestBody IdDto idDto) {
+        contestService.deleteContest(idDto.getId());
         return ResponseEntity.ok("success");
     }
 
     @PutMapping("/liked")
-    public ResponseEntity<String> likedContest(@RequestBody ContestIdDto contestIdDto) {
-        contestService.likeContest(contestIdDto.getContestId());
+    public ResponseEntity<String> likedContest(@RequestBody IdDto idDto) {
+        contestService.likeContest(idDto.getId());
         return ResponseEntity.ok("success");
     }
 }
