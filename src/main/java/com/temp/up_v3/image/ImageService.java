@@ -15,7 +15,6 @@ import java.util.UUID;
 public class ImageService {
 
     private final AmazonS3Client amazonS3Client;
-    private final ImageRepository imageRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -31,9 +30,7 @@ public class ImageService {
             metadata.setContentLength(file.getSize());
             amazonS3Client.putObject(bucket,fileName,file.getInputStream(),metadata);
 
-            ImageInfo imageInfo = new ImageInfo(fileUrl, fileName);
-
-            return imageInfo;
+            return new ImageInfo(fileUrl, fileName);
 
         } catch (IOException e) {
             e.printStackTrace();

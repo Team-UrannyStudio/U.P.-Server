@@ -1,5 +1,7 @@
 package com.temp.up_v3.jwt.dto;
 
+import com.temp.up_v3.jwt.Authority;
+import com.temp.up_v3.jwt.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

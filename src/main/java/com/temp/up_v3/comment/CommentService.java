@@ -1,9 +1,11 @@
 package com.temp.up_v3.comment;
 
+import com.temp.up_v3.image.ImageRepository;
 import com.temp.up_v3.jwt.Member;
 import com.temp.up_v3.comment.dto.CommentListResponseDto;
 import com.temp.up_v3.comment.dto.CommentRequestDto;
 import com.temp.up_v3.jwt.MemberRepository;
+import com.temp.up_v3.post.dto.PostListResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,10 +21,13 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
+    private final ImageRepository imageRepository;
 
     public void createComment(CommentRequestDto requestDto) {
 
         Comment comment = new Comment(requestDto);
+
+        comment.setParent_type("content");
 
         comment.setMember(memberRepository.findMemberByUid(SecurityContextHolder.getContext().getAuthentication().getName()));
 
@@ -36,8 +41,6 @@ public class CommentService {
 
         Collections.reverse(commentList);
 
-        Integer count = 0;
-
         for (Comment comment : commentList) {
 
             CommentListResponseDto responseDto = new CommentListResponseDto(comment);
@@ -45,11 +48,7 @@ public class CommentService {
             if (parent_type.equals(comment.getParent_type())) {
 
                 responseDtoList.add(responseDto);
-                count++;
 
-            }
-            if (count > 15) {
-                break;
             }
 
         }
@@ -85,14 +84,14 @@ public class CommentService {
         Member member = memberRepository.findByUid(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다."));
 
-        if (member.getLiked().contains("comment_" + commentId)) {
+        if (member.getLikedComment().contains(commentId)) {
 
-            member.getLiked().remove("comment_" + commentId);
+            member.getLikedComment().remove(commentId);
             comment.setLike_num(comment.getLike_num() - 1);
 
         } else {
 
-            member.getLiked().add("comment_" + commentId);
+            member.getLikedComment().add(commentId);
             comment.setLike_num(comment.getLike_num() + 1);
 
         }
@@ -120,5 +119,25 @@ public class CommentService {
             comment.setDislike_num(comment.getDislike_num() + 1);
 
         }
+    }
+
+    @Transactional
+    public List<CommentListResponseDto> Converter(List<Long> CommentList) {
+
+        List<CommentListResponseDto> responseDtoList = new ArrayList<>();
+
+        for (Long id : CommentList) {
+
+            Comment comment = commentRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("조회 실패")
+            );
+
+            CommentListResponseDto responseDto = new CommentListResponseDto(comment);
+
+            responseDtoList.add(responseDto);
+
+        }
+
+        return responseDtoList;
     }
 }

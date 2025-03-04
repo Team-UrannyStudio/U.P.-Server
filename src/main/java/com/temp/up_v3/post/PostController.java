@@ -34,6 +34,23 @@ public class PostController {
         return postService.findAllContents(content_type);
     }
 
+    //검색 조회
+    @GetMapping("/search")
+    public List<PostListResponseDto> getSearchedContents(@RequestParam String search, String content_type) {
+        return postService.findSearchedContents(search, content_type);
+    }
+
+    //카테고리 검색 조회
+    @GetMapping("/searchByCategory")
+    public List<PostListResponseDto> getContentsByCategory(@RequestParam String category, String participants, String location, String content_type) {
+        return postService.findByCategory(category, participants, location, content_type);
+    }
+
+    @GetMapping("/getOne")
+    public PostResponseDto getOne(@RequestParam Long id) {
+        return postService.findOneContent(id);
+    }
+
     // 글 수정 시 특정 글 정보 반환
     @GetMapping("/update")
     public PostResponseDto getOneContent(@RequestParam Long id) {

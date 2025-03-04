@@ -45,7 +45,6 @@ public class Comment {
         this.created_at = LocalDateTime.now();
         this.mainContent = commentRequestDto.getMainContent();
         this.parentId = commentRequestDto.getParentId();
-        this.parent_type = commentRequestDto.getParent_type();
         this.like_num = toLong(0);
         this.dislike_num = toLong(0);
     }

@@ -19,6 +19,7 @@ public class CommentController {
     // 글 등록
     @PostMapping("/post")
     public ResponseEntity<String> createComment(@RequestPart CommentRequestDto requestDto){
+        requestDto.setParent_type("content");
         commentService.createComment(requestDto);
         return ResponseEntity.ok("upload success");
     }
@@ -33,8 +34,8 @@ public class CommentController {
 
     // 전체 목록 조회
     @GetMapping("/commentlist")
-    public List<CommentListResponseDto> getAllComments(Long parentId, String parent_type) {
-        return commentService.findAllComments(parentId, parent_type);
+    public List<CommentListResponseDto> getAllComments(Long parentId) {
+        return commentService.findAllComments(parentId, "content");
     }
 
     // 답글 목록 조회

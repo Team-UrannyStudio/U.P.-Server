@@ -1,14 +1,13 @@
 package com.temp.up_v3.jwt;
 
-import com.temp.up_v3.jwt.dto.MemberRequestDto;
-import com.temp.up_v3.jwt.dto.MemberResponseDto;
-import com.temp.up_v3.jwt.dto.TokenDto;
-import com.temp.up_v3.jwt.dto.TokenRequestDto;
+import com.temp.up_v3.jwt.dto.*;
 import com.temp.up_v3.jwt.service.AuthService;
+import com.temp.up_v3.post.dto.IdDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -32,4 +31,22 @@ public class AuthController {
     public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
         return ResponseEntity.ok(authService.reissue(tokenRequestDto));
     }
+
+    @GetMapping("/update")
+    public MemberOneResponseDto getOneMember(@RequestBody String uid) {
+        return authService.findOneMember(uid);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateMember(@RequestPart String uid, @RequestPart MemberUpdateRequestDto requestDto, @RequestParam MultipartFile image) {
+        authService.updateMember(uid, requestDto, image);
+        return ResponseEntity.ok("success");
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteMember(@RequestParam String uid) {
+        authService.deleteMember(uid);
+        return ResponseEntity.ok("success");
+    }
+
 }

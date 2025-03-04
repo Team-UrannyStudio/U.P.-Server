@@ -1,5 +1,7 @@
 package com.temp.up_v3.jwt;
 
+import com.temp.up_v3.jwt.dto.MemberRequestDto;
+import com.temp.up_v3.jwt.dto.MemberUpdateRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -44,7 +46,10 @@ public class Member {
     private String profilePicture;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> liked;
+    private List<Long> likedComment;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Long> likedContent;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> disLiked;
@@ -58,6 +63,16 @@ public class Member {
         this.address = address;
         this.name = name;
         this.email = email;
-        this.liked = new ArrayList<>();
+        this.profilePicture = "https://uranny.s3.ap-northeast-2.amazonaws.com/basic+profile+image.png";
+        this.likedContent = new ArrayList<>();
+        this.likedComment = new ArrayList<>();
+        this.disLiked = new ArrayList<>();
+    }
+
+    public void update(MemberUpdateRequestDto requestDto) {
+        this.email = requestDto.getEmail();
+        this.name = requestDto.getName();
+        this.phone = requestDto.getPhone();
+        this.address = requestDto.getAddress();
     }
 }

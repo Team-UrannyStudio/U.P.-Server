@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -52,39 +51,8 @@ public class PostService {
     //전부 찾기
     public List<PostListResponseDto> findAllContents(String content_type) {
 
-        List<Post> postList = postRepository.findAll();
-        List<PostListResponseDto> responseDtoList = new ArrayList<>();
+        return postConverter(postRepository.findAll(), content_type);
 
-        Collections.reverse(postList);
-
-        int count1 = 0;
-        int count2 = 1;
-
-        for (Post post : postList) {
-            System.out.println(post.getContent_type());
-            if (post.getContent_type().equals(content_type)) {
-
-                PostListResponseDto responseDto = new PostListResponseDto(post);
-                responseDto.setPage(count2);
-                responseDto.setImage_path(imageRepository.findByContentId("content_" + post.getId()).getImagePath());
-
-                responseDtoList.add(responseDto);
-
-                count1 ++;
-
-                if (content_type.equals("community")) {
-                    if (count1 % 30 == 0) {
-                        count2 ++;
-                    }
-                } else {
-                    if (count1 % 15 == 0) {
-                        count2 ++;
-                    }
-                }
-            }
-        }
-
-        return responseDtoList;
     }
 
     //한 개 찾기
@@ -98,6 +66,33 @@ public class PostService {
         responseDto.setImage_path(imageRepository.findByContentId("content_" + id).getImagePath());
 
         return responseDto;
+    }
+
+    //검색 찾기
+    public List<PostListResponseDto> findSearchedContents(String search, String content_type) {
+
+        return postConverter(postRepository.findByTitleContaining(search), content_type);
+
+    }
+
+    //카테고리 검색
+    @Transactional
+    public List<PostListResponseDto> findByCategory(String category, String participants, String location, String content_type) {
+
+        List<PostListResponseDto> foundCategory = postConverter(postRepository.findByCategory(category), content_type);
+        List<PostListResponseDto> foundParticipants = postConverter(postRepository.findByParticipants(participants), content_type);
+        List<PostListResponseDto> foundLocation = postConverter(postRepository.findByLocation(location), content_type);
+
+        if (!category.equals("전체") | !participants.equals("전체")) {
+            foundCategory.retainAll(foundParticipants);
+        } else {
+            foundCategory = findAllContents(content_type);
+        }
+        if (!location.equals("전체")) {
+            foundCategory.retainAll(foundLocation);
+        }
+
+        return foundCategory;
     }
 
     //글 수정
@@ -140,16 +135,71 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 콘테스트가 존재하지 않습니다."));
 
-        if (member.getLiked().contains("content_" + id)) {
+        if (member.getLikedContent().contains(id)) {
 
-            member.getLiked().remove("content_" + id);
+            member.getLikedContent().remove(id);
             post.setLike_num(post.getLike_num() - 1);
 
         } else {
 
-            member.getLiked().add("content_" + id);
+            member.getLikedContent().add(id);
             post.setLike_num(post.getLike_num() + 1);
 
         }
+    }
+
+    @Transactional
+    public List<PostListResponseDto> memberConverter(List<Long> postList) {
+        List<PostListResponseDto> responseDtoList = new ArrayList<>();
+
+        for (Long id : postList) {
+
+            Post post = postRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("조회 실패")
+            );
+
+            PostListResponseDto MemberResponseDto = new PostListResponseDto(post);
+            MemberResponseDto.setImage_path(imageRepository.findByContentId("content_" + post.getId()).getImagePath());
+
+            responseDtoList.add(MemberResponseDto);
+
+        }
+
+        return responseDtoList;
+    }
+
+    public List<PostListResponseDto> postConverter(List<Post> postList, String content_type) {
+
+        List<PostListResponseDto> responseDtoList = new ArrayList<>();
+
+        int count1 = 0;
+        int count2 = 1;
+
+        for (Post post : postList) {
+
+            if(post.getContent_type().equals(content_type)) {
+
+                PostListResponseDto responseDto = new PostListResponseDto(post);
+                responseDto.setPage(count2);
+                responseDto.setImage_path(imageRepository.findByContentId("content_" + post.getId()).getImagePath());
+
+                responseDtoList.add(responseDto);
+
+                count1 ++;
+
+            }
+
+            if (content_type.equals("community")) {
+                if (count1 % 30 == 0) {
+                    count2 ++;
+                }
+            } else {
+                if (count1 % 15 == 0) {
+                    count2 ++;
+                }
+            }
+        }
+
+        return responseDtoList;
     }
 }
