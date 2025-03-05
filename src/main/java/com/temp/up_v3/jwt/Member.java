@@ -1,6 +1,5 @@
 package com.temp.up_v3.jwt;
 
-import com.temp.up_v3.jwt.dto.MemberRequestDto;
 import com.temp.up_v3.jwt.dto.MemberUpdateRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;

@@ -1,6 +1,5 @@
 package com.temp.up_v3.post;
 
-import com.temp.up_v3.post.dto.PostListResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -11,7 +11,6 @@ import com.temp.up_v3.jwt.MemberRepository;
 import com.temp.up_v3.jwt.RefreshToken;
 import com.temp.up_v3.jwt.RefreshTokenRepository;
 import com.temp.up_v3.jwt.dto.*;
-import com.temp.up_v3.post.PostRepository;
 import com.temp.up_v3.post.PostService;
 import com.temp.up_v3.post.dto.PostListResponseDto;
 import jakarta.transaction.Transactional;
@@ -52,10 +51,10 @@ public class AuthService {
     }
 
     public TokenDto login(MemberRequestDto memberRequestDto) {
-        // 1. email과 password 즉, memberRequestDto를 사용하여 authenticationToken 생성
+        // 1. email 과 password 즉, memberRequestDto 를 사용하여 authenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = memberRequestDto.toAuthentication();
 
-        // 2. 실제로 검증 (위에서 만든 authenticationToken을 활용해서 데이터베이스의 내용과 일치하는 지 확인)
+        // 2. 실제로 검증 (위에서 만든 authenticationToken 을 활용해서 데이터베이스의 내용과 일치하는 지 확인)
         // CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드도 함께 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 

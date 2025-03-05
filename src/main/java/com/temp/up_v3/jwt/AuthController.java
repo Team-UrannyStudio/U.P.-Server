@@ -2,7 +2,6 @@ package com.temp.up_v3.jwt;
 
 import com.temp.up_v3.jwt.dto.*;
 import com.temp.up_v3.jwt.service.AuthService;
-import com.temp.up_v3.post.dto.IdDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    //requestbody 어노테이션은 요청 body 부분에 있는 내용을 읽어서 처리 아래의 경우 json 형식 또는 xml 방식으로 받아서 requestdto로 변환
+    //requestBody 어노테이션은 요청 body 부분에 있는 내용을 읽어서 처리 아래의 경우 json 형식 또는 xml 방식으로 받아서 requestDto 로 변환
     public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto memberRequestDto) {
         return ResponseEntity.ok(authService.signup(memberRequestDto));
     }

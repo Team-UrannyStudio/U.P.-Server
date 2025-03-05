@@ -32,8 +32,8 @@ public class PostService {
 
         Post post = new Post(requestDto);
 
-        if (post.getContact() == null) {
-            post.setContact(memberRepository.findByUid(SecurityContextHolder.getContext().getAuthentication().getName()).get().getEmail());
+        if (post.getContact() == null & memberRepository.findByUid(SecurityContextHolder.getContext().getAuthentication().getName()).isPresent()) {
+            post.setContact(memberRepository.findByUid(SecurityContextHolder.getContext().getAuthentication().getName()).get().getEmail().describeConstable().orElseThrow());
         }
 
         post.setMember(memberRepository.findMemberByUid(SecurityContextHolder.getContext().getAuthentication().getName()));

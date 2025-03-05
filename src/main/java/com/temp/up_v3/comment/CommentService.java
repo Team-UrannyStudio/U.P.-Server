@@ -1,11 +1,9 @@
 package com.temp.up_v3.comment;
 
-import com.temp.up_v3.image.ImageRepository;
 import com.temp.up_v3.jwt.Member;
 import com.temp.up_v3.comment.dto.CommentListResponseDto;
 import com.temp.up_v3.comment.dto.CommentRequestDto;
 import com.temp.up_v3.jwt.MemberRepository;
-import com.temp.up_v3.post.dto.PostListResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +19,6 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
-    private final ImageRepository imageRepository;
 
     public void createComment(CommentRequestDto requestDto) {
 

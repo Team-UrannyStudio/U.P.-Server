@@ -1,6 +1,5 @@
 package com.temp.up_v3.post;
 
-import com.temp.up_v3.image.ImageService;
 import com.temp.up_v3.post.dto.IdDto;
 import com.temp.up_v3.post.dto.PostListResponseDto;
 import com.temp.up_v3.post.dto.PostRequestDto;

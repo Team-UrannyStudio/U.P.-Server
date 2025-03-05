@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ImageRepository extends JpaRepository<ImageDetails, Long> {
 
-    public ImageDetails findByContentId(String contentId);
+    ImageDetails findByContentId(String contentId);
 }

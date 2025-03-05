@@ -33,7 +33,7 @@ public class CommentController {
     }
 
     // 전체 목록 조회
-    @GetMapping("/commentlist")
+    @GetMapping("/commentList")
     public List<CommentListResponseDto> getAllComments(Long parentId) {
         return commentService.findAllComments(parentId, "content");
     }
