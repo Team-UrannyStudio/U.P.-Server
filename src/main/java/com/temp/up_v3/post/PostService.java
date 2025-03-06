@@ -83,14 +83,18 @@ public class PostService {
         List<PostListResponseDto> foundParticipants = postConverter(postRepository.findByParticipants(participants), content_type);
         List<PostListResponseDto> foundLocation = postConverter(postRepository.findByLocation(location), content_type);
 
-        if (!category.equals("전체") | !participants.equals("전체")) {
-            foundCategory.retainAll(foundParticipants);
-        } else {
+        if (!category.equals("전체")) {
             foundCategory = findAllContents(content_type);
         }
-        if (!location.equals("전체")) {
-            foundCategory.retainAll(foundLocation);
+        if (!participants.equals("전체")) {
+            foundParticipants = findAllContents(content_type);
         }
+        if (!location.equals("전체")) {
+            foundLocation = findAllContents(content_type);
+        }
+
+        foundCategory.retainAll(foundParticipants);
+        foundCategory.retainAll(foundLocation);
 
         return foundCategory;
     }
