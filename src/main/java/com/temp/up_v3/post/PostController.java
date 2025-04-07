@@ -18,6 +18,11 @@ public class PostController {
 
     private final PostService postService;
 
+    //정상 작동 확인 코드
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
 
     // 글 등록
     @PostMapping("/post")
