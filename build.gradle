@@ -39,3 +39,9 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.named('bootJar') {
+    from('src/main/resources') {
+        include '**/*.yml'
+    }
+}

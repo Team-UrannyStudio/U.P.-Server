@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:mysql://up.cb4cga04s7t0.ap-northeast-2.rds.amazonaws.com:3306/up?useSSL=false&serverTimezone=Asia/Seoul
+    username: admin
+    password: h9906155^^
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
