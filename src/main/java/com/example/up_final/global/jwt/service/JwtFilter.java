@@ -32,7 +32,9 @@ public class JwtFilter extends OncePerRequestFilter {
         // 인증이 필요 없는 경로는 JWT 검증을 건너뜀
         if (requestURI.startsWith("/auth/signup") ||
                 requestURI.startsWith("/auth/login") ||
-                requestURI.startsWith("/auth/reissue")) {
+                requestURI.startsWith("/auth/reissue") ||
+                requestURI.startsWith("/swagger-ui/")
+        ) {
             log.debug("인증이 필요 없는 경로입니다: {}", requestURI);
             filterChain.doFilter(request, response);
             return;
